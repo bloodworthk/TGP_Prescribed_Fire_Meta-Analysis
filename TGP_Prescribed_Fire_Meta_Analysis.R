@@ -8,11 +8,12 @@
 
 #### Install and load libraries ####
 
-install.packages("BiocManager")
+#install.packages("BiocManager")
 library(BiocManager)
 BiocManager::install("EBImage")
 #install.packages("Rcpp")
-install.packages("tcltk2")
+library(Rcpp)
+#install.packages("tcltk2")
 library(tcltk2)
 #install.packages("metagear")
 library(metagear)
@@ -27,8 +28,6 @@ setwd("/Users/kathrynbloodworth/Box/TNC_TGP_RxFire/Data")
 
 #### Read in Data frame with first 500 papers ####
 
-Web_of_Science_First500<-read.csv("Papers/Web_of_Science_06_16_20_Papers1-500.csv")
-names(Web_of_Science_First500)
 
 Web_of_Science_FirstPage<-read.csv("Papers/Web_of_Science_06_16_20_Page1.csv")
 
@@ -65,4 +64,4 @@ list.files(pattern = "effort")
 #References_screened_Summary <- effort_summary(References_screened)
 
 
-abstract_screener("effort_Kathryn2.csv", aReviewer = "Kathryn")
+abstract_screener("effort_Kathryn.csv", aReviewer = "Kathryn")
