@@ -8,10 +8,12 @@
 
 #### Install and load libraries ####
 
-#install.packages("BiocManager")
+install.packages("BiocManager")
 library(BiocManager)
-#BiocManager::install("EBImage")
-install.packages("Rcpp")
+BiocManager::install("EBImage")
+#install.packages("Rcpp")
+install.packages("tcltk2")
+library(tcltk2)
 #install.packages("metagear")
 library(metagear)
 
@@ -20,6 +22,8 @@ library(metagear)
 #Bloodworth - Desktop
 setwd("/Users/kjbloodw/Box/TNC_TGP_RxFire/Data")
 
+#Bloodworth - Mac
+setwd("/Users/kathrynbloodworth/Box/TNC_TGP_RxFire/Data")
 
 #### Read in Data frame with first 500 papers ####
 
@@ -45,10 +49,10 @@ References_unscreened_random <- effort_distribute(References_screening_ready, re
 References_unscreened_random[c("STUDY_ID","REVIEWERS")]
 
 #From Initialization through assignment of papers (effort distribute) all in one step -- assigns 50/50
-References_unscreened<-effort_distribute(Web_of_Science_FirstPage, reviewers = c("Kathryn", "Sarah"), initialize = TRUE)
+References_unscreened<-effort_distribute(Web_of_Science_FirstPage, reviewers = c("Kathryn", "Sarah"), initialize = TRUE, save_split = TRUE)
 
 ### Randomly delegating screening efforts with two reviewers (Kathryn and Sarah), where Kathryn takes 80% of studies ### save_splot = TRUE allows this particular split to be saved to a file
-References_unscreened_60 <- effort_distribute(References_screening_ready, reviewers = Reviewers, effort = c(60,40), save_split = TRUE)
+#References_unscreened_60 <- effort_distribute(References_screening_ready, reviewers = Reviewers, effort = c(60,40), save_split = TRUE)
 
 # save files in working directory by name of reviewer
 list.files(pattern = "effort")
@@ -60,4 +64,5 @@ list.files(pattern = "effort")
 #See how many were vetted yes, no, not vetted. Review progress and check percentage of usable papers
 #References_screened_Summary <- effort_summary(References_screened)
 
-abstract_screener("effort_Kathryn.csv", aReviewer = "Kathryn")
+
+abstract_screener("effort_Kathryn2.csv", aReviewer = "Kathryn")
