@@ -64,11 +64,6 @@ list.files(pattern = "effort")
 #See how many were vetted yes, no, not vetted. Review progress and check percentage of usable papers
 #References_screened_Summary <- effort_summary(References_screened)
 
-abstract_screener("effort_Kathryn.csv", aReviewer = "Kathryn")
-
-abstract_screener("effort_Kathryn.csv",  reviewerColumnName = "REVIEWERS_A", aReviewer = "REVIEWERS_A",unscreenedColumnName = "INCLUDE_A",unscreenedValue = "not vetted",abstractColumnName = "Abstract",titleColumnName = "Article.Title")
-
-
 abstract_screener(file = file.choose("effort_Kathryn.csv"),
          aReviewer = "Kathryn",
          reviewerColumnName = "REVIEWERS_A",
@@ -85,11 +80,3 @@ abstract_screener(file = file.choose("effort_Kathryn.csv"),
          buttonSize = 10,
          highlightColor = "powderblue",
          highlightKeywords = NA)
-
-
-
-data(example_references_metagear)
-effort_distribute(example_references_metagear,
- initialize = TRUE,reviewers = "marc",save_split = TRUE)
-abstract_screener("effort_marc.csv",aReviewer = "marc", highlightKeywords = "and")
-
