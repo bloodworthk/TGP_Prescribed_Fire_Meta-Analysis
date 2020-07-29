@@ -9,17 +9,17 @@
 #### Install and load libraries ####
 #had to first download XQuartz on mac, then followed these steps https://www.andrewheiss.com/blog/2012/04/17/install-r-rstudio-r-commander-windows-osx/, then had to install Rcmdr 
 
-#install.packages("Rcmdr")
+install.packages("Rcmdr")
 library(Rcmdr)
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 BiocManager::install(version = "3.11")
 BiocManager::install("EBImage")
-install.packages("Rcpp")
+#install.packages("Rcpp")
 library(Rcpp)
-install.packages("tcltk2")
+#install.packages("tcltk2")
 library(tcltk2)
-install.packages("metagear")
+#install.packages("metagear")
 library(metagear)
 
 
@@ -33,23 +33,23 @@ setwd("/Users/kathrynbloodworth/Box/TNC_TGP_RxFire/Data")
 
 #### Read in Data frame with first 10 papers ####
 
-Web_of_Science_FirstPage<-read.csv("Papers/Web_of_Science_06_16_20_Page1.csv")
+Web_of_Science_Articles<-read.csv("Papers/Articles_For_Screening_07_28_2020.csv", header = T)
 
 #### Setting up screening tasks ####
 #Following http://lajeunesse.myweb.usf.edu/metagear/metagear_basic_vignette.html#installation-and-dependencies 
 
 #prime the study-reference dataset - function adds 4 new columns: Study_ID (unique number for each reference), Reviewers (an empty column with NAs that will populate later with reviewers), 2 columns for Include (will contain the screening efforts by both reviewers)
 
-References_screening_ready<-effort_initialize(Web_of_Science_FirstPage,dual = TRUE)
+References_screening_ready<-effort_initialize(Web_of_Science_Articles)
 
-#Create a list with reviewer names to be assigned papers
-Reviewers<-c("Kathryn", "Sarah")
+names(References_screening_ready)
 
 ### Randomly delegate screening efforts to two reviewers (Kathryn and Sarah) ###
-References_unscreened_random <- effort_distribute(References_screening_ready, dual = TRUE, reviewers = Reviewers, initialize = TRUE, save_split = TRUE)
+References_unscreened_<- effort_distribute(References_screening_ready, dual = TRUE, reviewers = c("Kathryn", "Sarah"), initialize = TRUE, save_split = TRUE,)
+
 
 #From Initialization through assignment of papers (effort distribute) all in one step -- assigns 50/50
-#References_unscreened<-effort_distribute(Web_of_Science_FirstPage, reviewers = c("Kathryn", "Sarah"), initialize = TRUE, save_split = TRUE)
+#References_unscreened<-effort_distribute(Web_of_Science_Articles, reviewers = c("Kathryn", "Sarah"), initialize = TRUE, save_split = TRUE)
 
 ### Randomly delegating screening efforts with two reviewers (Kathryn and Sarah), where Kathryn takes 80% of studies ### save_splot = TRUE allows this particular split to be saved to a file
 #References_unscreened_60 <- effort_distribute(References_screening_ready, reviewers = Reviewers, effort = c(60,40), save_split = TRUE)
@@ -64,4 +64,32 @@ list.files(pattern = "effort")
 #See how many were vetted yes, no, not vetted. Review progress and check percentage of usable papers
 #References_screened_Summary <- effort_summary(References_screened)
 
-abstract_screener("effort_Kathryn.csv",  aReviewer = "Kathryn")
+abstract_screener("effort_Kathryn.csv", aReviewer = "Kathryn")
+
+abstract_screener("effort_Kathryn.csv",  reviewerColumnName = "REVIEWERS_A", aReviewer = "REVIEWERS_A",unscreenedColumnName = "INCLUDE_A",unscreenedValue = "not vetted",abstractColumnName = "Abstract",titleColumnName = "Article.Title")
+
+
+abstract_screener(file = file.choose("effort_Kathryn.csv"),
+         aReviewer = "Kathryn",
+         reviewerColumnName = "REVIEWERS_A",
+         unscreenedColumnName = "INCLUDE_A",
+         unscreenedValue = "not vetted",
+         abstractColumnName = "Abstract",
+         titleColumnName = "Article.Title",
+         browserSearch = "https://www.google.com/search?q=",
+         fontSize = 13,
+         windowWidth = 70,
+         windowHeight = 16,
+         theButtons = c("YES", "maybe", "NO"),
+         keyBindingToButtons = c("y", "m", "n"),
+         buttonSize = 10,
+         highlightColor = "powderblue",
+         highlightKeywords = NA)
+
+
+
+data(example_references_metagear)
+effort_distribute(example_references_metagear,
+ initialize = TRUE,reviewers = "marc",save_split = TRUE)
+abstract_screener("effort_marc.csv",aReviewer = "marc", highlightKeywords = "and")
+
