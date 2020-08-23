@@ -9,7 +9,7 @@
 #### Install and load libraries ####
 #had to first download XQuartz on mac, then followed these steps https://www.andrewheiss.com/blog/2012/04/17/install-r-rstudio-r-commander-windows-osx/, then had to install Rcmdr 
 
-install.packages("Rcmdr")
+#install.packages("Rcmdr")
 library(Rcmdr)
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
@@ -79,4 +79,9 @@ abstract_screener(file = file.choose("effort_Kathryn.csv"),
          keyBindingToButtons = c("y", "m", "n"),
          buttonSize = 10,
          highlightColor = "powderblue",
-         highlightKeywords = NA)
+         highlightKeywords = c("fire","burn","grassland","tallgrass prairie","prairie", "savanna", "rangeland"))
+
+theRefs_screened <- read.csv("effort_Kathryn.csv")
+theRefs_screened[c("STUDY_ID", "REVIEWERS_A", "INCLUDE_A")]
+
+theSummary <- effort_summary(theRefs_screened, column_reviewers = "REVIEWERS_A",column_effort = "INCLUDE_A",dual = FALSE)
