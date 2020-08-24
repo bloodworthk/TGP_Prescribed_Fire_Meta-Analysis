@@ -22,6 +22,11 @@ library(tcltk2)
 #install.packages("metagear")
 library(metagear)
 
+###Gora version Install packages, latest R version
+install.packages("zip")
+library(zip)
+install.packages("mgcv")
+library(mgcv)
 
 #### Set Working Directories ####
 
