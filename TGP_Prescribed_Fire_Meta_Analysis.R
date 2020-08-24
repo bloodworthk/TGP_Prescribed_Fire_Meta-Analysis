@@ -9,6 +9,13 @@
 #### Install and load libraries ####
 #had to first download XQuartz on mac, then followed these steps https://www.andrewheiss.com/blog/2012/04/17/install-r-rstudio-r-commander-windows-osx/, then had to install Rcmdr 
 
+###Gora version Install packages, latest R version
+
+install.packages("zip")
+library(zip)
+install.packages("mgcv")
+library(mgcv)
+#Needed on all computers
 #install.packages("Rcmdr")
 library(Rcmdr)
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -22,11 +29,7 @@ library(tcltk2)
 #install.packages("metagear")
 library(metagear)
 
-###Gora version Install packages, latest R version
-install.packages("zip")
-library(zip)
-install.packages("mgcv")
-library(mgcv)
+
 
 #### Set Working Directories ####
 
