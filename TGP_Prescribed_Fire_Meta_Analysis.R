@@ -1,7 +1,7 @@
 ##########################################################################################################
 #Project: Prescribed Fire in Tallgrass Priarie Meta-Analysis 
 
-#Contributors: Kathryn Bloodworth, Dirac Twidwall, Alice Boyle, Ellen Welti, Marissa Ahlering, Brian Obermeyer, Chris Helzer, Bob Hamilton, Sarah Gora, Elizabeth Bach, Clare Kazanski, Sally Koerner 
+#Contributors: Kathryn Bloodworth, Dirac Twidwall, Alice Boyle, Ellen Welti, Marissa Ahlering, Brian Obermeyer, Chris Helzer, Bob Hamilton, Elizabeth Bach, Clare Kazanski, Sally Koerner 
 
 #Coder: Kathryn Bloodworth, Sarah Gora
 ##########################################################################################################
@@ -31,8 +31,6 @@ library(tcltk2)
 library(data.table)
 #install.packages("tidyverse")
 library(tidyverse)
-#install.packages("arsenal")
-library(arsenal)
 #install.packages("metagear")
 library(metagear)
 
@@ -106,12 +104,12 @@ abstract_screener(file = file.choose("effort_Kathryn.csv"),
 
 #To get this to work I had to remove columns that interfered with merging, including the unused Reviewer in each dataframe
 
-Kathryn<-read.csv("~/Box/TNC_TGP_RxFire/Data/effort_Kathryn1.csv")%>%
-  select("STUDY_ID","REVIEWERS_A","INCLUDE_A") #%>% 
+Kathryn<-read.csv("effort_Kathryn.csv")%>%
+  select(-"REVIEWERS_B",-"INCLUDE_B") #%>% 
   #rename("INCLUDE"="INCLUDE_A") %>% 
     #rename("REVIEWERS"="REVIEWERS_A")
 
-Sarah<-read.csv("~/Box/TNC_TGP_RxFire/Data/effort_Sarah.csv")%>% 
+Sarah<-read.csv("effort_Sarah.csv") %>% 
   select(-"REVIEWERS_A",-"INCLUDE_A") #%>% 
   #rename("INCLUDE"="INCLUDE_B")%>% 
     #rename("REVIEWERS"="REVIEWERS_B")
@@ -122,47 +120,58 @@ theRefs_screened <- Kathryn %>%
 #instead of using effort_summary -- we looked together at each individual outcome and if we dissagreed, we went into excel and manually changed the answer of one of our reviews to match the other
 theRefs_screened[c("STUDY_ID", "REVIEWERS_A", "INCLUDE_A","REVIEWERS_B","INCLUDE_B")]
 
-
 ## Sarah and Kathryn reviewed each paper together and decided on final answer when original answers were disagreed on, then each cell was changed individually
 
 #figure out why NA isn't changin to NO
-theRefs_screened[1,5]<-"NO"
-theRefs_screened[2,3]<-"NO"
-theRefs_screened[2,5]<-"NO"
+theRefs_screened[1,74]<-"NO" #change sarah's answer
+theRefs_screened[2,3]<-"NO" #change kathryn's answer
+theRefs_screened[2,74]<-"NO"
 theRefs_screened[9,3]<-"NO"
-theRefs_screened[10,5]<-"NO"
+theRefs_screened[10,74]<-"NO"
 theRefs_screened[17,3]<-"NO"
-theRefs_screened[19,5]<-"NO"
+theRefs_screened[19,74]<-"NO"
 theRefs_screened[35,3]<-"NO"
-theRefs_screened[37,3]<-"NO"
 theRefs_screened[39,3]<-"NO"
-theRefs_screened[39,5]<-"NO"
+theRefs_screened[39,74]<-"NO"
 theRefs_screened[40,3]<-"NO"
-theRefs_screened[44,3]<-"YES"
-theRefs_screened[47,5]<-"NO"
-theRefs_screened[52,5]<-"NO"
+theRefs_screened[44,74]<-"NO"
+theRefs_screened[47,74]<-"NO"
+theRefs_screened[52,74]<-"NO"
 theRefs_screened[63,3]<-"NO"
-theRefs_screened[65,5]<-"NO"
-theRefs_screened[66,5]<-"YES"
-theRefs_screened[68,5]<-"YES"
-theRefs_screened[73,5]<-"NO"
-theRefs_screened[76,5]<-"NO"
-
+theRefs_screened[52,74]<-"NO"
+theRefs_screened[65,74]<-"NO"
+theRefs_screened[66,74]<-"YES"
+theRefs_screened[68,74]<-"YES"
+theRefs_screened[73,74]<-"NO"
+theRefs_screened[76,74]<-"NO"
+theRefs_screened[86,3]<-"NO"
+theRefs_screened[88,74]<-"NO"
+theRefs_screened[91,74]<-"NO"
+theRefs_screened[95,74]<-"NO"
+theRefs_screened[97,3]<-"YES"
+theRefs_screened[110,74]<-"NO"
+theRefs_screened[111,3]<-"NO"
+theRefs_screened[115,74]<-"NO"
+theRefs_screened[132,74]<-"YES"
+theRefs_screened[141,3]<-"NO"
+theRefs_screened[145,74]<-"NO"
+theRefs_screened[146,74]<-"NO"
 
 theRefs_screened[c("STUDY_ID", "REVIEWERS_A", "INCLUDE_A","REVIEWERS_B","INCLUDE_B")]
-
 #Determining how many differences
 
-Compare_Kathryn<- theRefs_screened %>% 
-  select("INCLUDE_A") %>% 
-  rename(Include="INCLUDE_A")
+Kathryn_1<-read.csv("effort_Kathryn.csv")%>%
+  select(-"REVIEWERS_B",-"INCLUDE_B") %>% 
+  rename("INCLUDE"="INCLUDE_A") %>% 
+  rename("REVIEWERS"="REVIEWERS_A")
 
-Compare_Sarah<- theRefs_screened %>% 
-  select("INCLUDE_B") %>% 
-  rename(Include="INCLUDE_B")
+Sarah_1<-read.csv("effort_Sarah.csv") %>% 
+  select(-"REVIEWERS_A",-"INCLUDE_A") %>% 
+  rename("INCLUDE"="INCLUDE_B")%>% 
+  rename("REVIEWERS"="REVIEWERS_B")
 
 #install.packages("arsenal")
 #library(arsenal)
 
-summary(comparedf(Compare_Kathryn,Compare_Sarah))
+summary(comparedf(Kathryn_1,Sarah_1))
                              
