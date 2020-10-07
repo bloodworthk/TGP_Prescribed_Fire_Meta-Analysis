@@ -88,6 +88,23 @@ abstract_screener(file = file.choose("effort_Kathryn.csv"),
          highlightColor = "powderblue",
          highlightKeywords = c("fire","burn","grassland","tallgrass prairie","prairie", "savanna", "rangeland"))
 
+abstract_screener(file = file.choose("effort_Sarah.csv"),
+                  aReviewer = "Sarah",
+                  reviewerColumnName = "REVIEWERS_B",
+                  unscreenedColumnName = "INCLUDE_B",
+                  unscreenedValue = "not vetted",
+                  abstractColumnName = "Abstract",
+                  titleColumnName = "Article.Title",
+                  browserSearch = "https://www.google.com/search?q=",
+                  fontSize = 13,
+                  windowWidth = 70,
+                  windowHeight = 16,
+                  theButtons = c("YES", "maybe", "NO"),
+                  keyBindingToButtons = c("y", "m", "n"),
+                  buttonSize = 10,
+                  highlightColor = "powderblue",
+                  highlightKeywords = c("fire","burn","grassland","tallgrass prairie","prairie", "savanna", "rangeland"))
+
 ###This does not work with dual reviewers -- cannot get effort summary to work without error 
 
 #Remerge files from both reviewers (do this if reviewers use data frames in the working directory to vet the references -- each reviewer must change the column "Include" to either a YES or NO)
@@ -105,7 +122,7 @@ abstract_screener(file = file.choose("effort_Kathryn.csv"),
 #To get this to work I had to remove columns that interfered with merging, including the unused Reviewer in each dataframe
 
 Kathryn<-read.csv("effort_Kathryn.csv")%>%
-  select(-"REVIEWERS_B",-"INCLUDE_B") #%>% 
+  select("STUDY_ID","REVIEWERS_A","INCLUDE_A") #%>% 
   #rename("INCLUDE"="INCLUDE_A") %>% 
     #rename("REVIEWERS"="REVIEWERS_A")
 
@@ -117,61 +134,167 @@ Sarah<-read.csv("effort_Sarah.csv") %>%
 theRefs_screened <- Kathryn %>% 
   left_join(Sarah)
 
+
+screening_checks<-theRefs_screened %>% 
+  select("STUDY_ID","INCLUDE_A","INCLUDE_B")
+
 #instead of using effort_summary -- we looked together at each individual outcome and if we dissagreed, we went into excel and manually changed the answer of one of our reviews to match the other
 theRefs_screened[c("STUDY_ID", "REVIEWERS_A", "INCLUDE_A","REVIEWERS_B","INCLUDE_B")]
 
 ## Sarah and Kathryn reviewed each paper together and decided on final answer when original answers were disagreed on, then each cell was changed individually
 
 #figure out why NA isn't changin to NO
-theRefs_screened[1,74]<-"NO" #change sarah's answer
+theRefs_screened[1,5]<-"NO" #change sarah's answer
 theRefs_screened[2,3]<-"NO" #change kathryn's answer
-theRefs_screened[2,74]<-"NO"
+theRefs_screened[2,5]<-"NO"
 theRefs_screened[9,3]<-"NO"
-theRefs_screened[10,74]<-"NO"
+theRefs_screened[10,5]<-"NO"
 theRefs_screened[17,3]<-"NO"
-theRefs_screened[19,74]<-"NO"
+theRefs_screened[19,5]<-"NO"
 theRefs_screened[35,3]<-"NO"
+theRefs_screened[37,3]<-"NO"
 theRefs_screened[39,3]<-"NO"
-theRefs_screened[39,74]<-"NO"
+theRefs_screened[39,5]<-"NO"
 theRefs_screened[40,3]<-"NO"
-theRefs_screened[44,74]<-"NO"
-theRefs_screened[47,74]<-"NO"
-theRefs_screened[52,74]<-"NO"
+theRefs_screened[44,5]<-"NO"
+theRefs_screened[47,5]<-"NO"
+theRefs_screened[52,5]<-"NO"
 theRefs_screened[63,3]<-"NO"
-theRefs_screened[52,74]<-"NO"
-theRefs_screened[65,74]<-"NO"
-theRefs_screened[66,74]<-"YES"
-theRefs_screened[68,74]<-"YES"
-theRefs_screened[73,74]<-"NO"
-theRefs_screened[76,74]<-"NO"
+theRefs_screened[52,5]<-"NO"
+theRefs_screened[65,5]<-"NO"
+theRefs_screened[66,5]<-"YES"
+theRefs_screened[68,5]<-"YES"
+theRefs_screened[73,5]<-"NO"
+theRefs_screened[76,5]<-"NO"
 theRefs_screened[86,3]<-"NO"
-theRefs_screened[88,74]<-"NO"
-theRefs_screened[91,74]<-"NO"
-theRefs_screened[95,74]<-"NO"
+theRefs_screened[88,5]<-"NO"
+theRefs_screened[91,5]<-"NO"
+theRefs_screened[95,5]<-"NO"
 theRefs_screened[97,3]<-"YES"
-theRefs_screened[110,74]<-"NO"
+theRefs_screened[110,5]<-"NO"
 theRefs_screened[111,3]<-"NO"
-theRefs_screened[115,74]<-"NO"
-theRefs_screened[132,74]<-"YES"
+theRefs_screened[115,5]<-"NO"
+theRefs_screened[132,5]<-"YES"
 theRefs_screened[141,3]<-"NO"
-theRefs_screened[145,74]<-"NO"
-theRefs_screened[146,74]<-"NO"
+theRefs_screened[145,3]<-"NO"
+theRefs_screened[146,3]<-"NO"
+theRefs_screened[148,3]<-"NO"
+theRefs_screened[150,5]<-"NO"
+theRefs_screened[186,5]<-"NO"
+theRefs_screened[194,5]<-"NO"
+theRefs_screened[213,3]<-"YES"
+theRefs_screened[233,3]<-"NO"
+theRefs_screened[246,5]<-"NO"
+theRefs_screened[261,5]<-"NO"
+theRefs_screened[263,5]<-"NO"
+theRefs_screened[268,5]<-"NO"
+theRefs_screened[269,5]<-"NO"
+theRefs_screened[274,3]<-"YES"
+theRefs_screened[285,5]<-"NO"
+theRefs_screened[291,5]<-"NO"
+theRefs_screened[293,5]<-"YES"
+theRefs_screened[302,5]<-"NO"
+theRefs_screened[303,5]<-"NO"
+theRefs_screened[304,5]<-"NO"
+theRefs_screened[319,5]<-"NO"
+theRefs_screened[323,5]<-"NO"
+theRefs_screened[326,5]<-"NO"
+theRefs_screened[237,3]<-"YES"
+theRefs_screened[337,3]<-"NO"
+theRefs_screened[341,5]<-"NO"
+theRefs_screened[342,5]<-"NO"
+theRefs_screened[397,3]<-"NO"
+theRefs_screened[429,5]<-"NO"
+theRefs_screened[459,5]<-"NO"
+theRefs_screened[469,5]<-"YES"
+theRefs_screened[473,5]<-"NO"
+theRefs_screened[493,5]<-"NO"
+theRefs_screened[501,5]<-"NO"
+theRefs_screened[536,5]<-"NO"
+theRefs_screened[539,5]<-"NO"
+theRefs_screened[596,5]<-"NO"
+theRefs_screened[633,5]<-"NO"
+
+
 
 theRefs_screened[c("STUDY_ID", "REVIEWERS_A", "INCLUDE_A","REVIEWERS_B","INCLUDE_B")]
 #Determining how many differences
 
-Kathryn_1<-read.csv("effort_Kathryn.csv")%>%
+Kathryn_1<-theRefs_screened%>%
   select(-"REVIEWERS_B",-"INCLUDE_B") %>% 
   rename("INCLUDE"="INCLUDE_A") %>% 
   rename("REVIEWERS"="REVIEWERS_A")
 
-Sarah_1<-read.csv("effort_Sarah.csv") %>% 
+Sarah_1<-theRefs_screened %>% 
   select(-"REVIEWERS_A",-"INCLUDE_A") %>% 
   rename("INCLUDE"="INCLUDE_B")%>% 
   rename("REVIEWERS"="REVIEWERS_B")
 
 #install.packages("arsenal")
-#library(arsenal)
+library(arsenal)
 
 summary(comparedf(Kathryn_1,Sarah_1))
-                             
+
+#### Second set of screening process ####
+
+#merge together              
+
+#bring in dataframe with new papers that also includes ~642 of the same papers that we already screened
+Second_Screen<-read.csv("Papers/Articles_For_Screening_second_round.csv",header=T)
+  
+Second_Screen_new_col<-Second_Screen %>% 
+  add_column(STUDY_ID=NA,.after = "Date.of.Export") %>%
+  add_column(REVIEWERS_A="Kathryn",.after = "Date.of.Export") %>% 
+  add_column(INCLUDE_A="not vetted",.after = "Date.of.Export") %>%
+  add_column(REVIEWERS_B="Sarah",.after = "Date.of.Export") %>% 
+  add_column(INCLUDE_B="not vetted",.after = "Date.of.Export") %>%
+  add_column(STUDY_ID.1=NA,.after = "Date.of.Export") %>% 
+  add_column(X=NA,.after = "Date.of.Export")
+  
+Second_Screen_merged<- Second_Screen %>% 
+  right_join(theRefs_screened)
+
+Second_Screen_New_papers<-Second_Screen_merged %>% 
+  rbind(Second_Screen_new_col)
+
+Second_Screen_Unique<- Second_Screen_New_papers[!duplicated(Second_Screen_New_papers$Article.Title),]
+
+Second_Screen_Unique[c("STUDY_ID", "REVIEWERS_A", "INCLUDE_A","REVIEWERS_B","INCLUDE_B")]
+
+References_unscreened_second<- effort_distribute(Second_Screen_Unique, dual = TRUE, reviewers = c("Kathryn_Second", "Sarah_Second"), initialize = TRUE, save_split = TRUE,) 
+
+abstract_screener(file = file.choose("effort_Kathryn_Second.csv"),
+                  aReviewer = "Kathryn",
+                  reviewerColumnName = "REVIEWERS_A.1",
+                  unscreenedColumnName = "INCLUDE_A.1",
+                  unscreenedValue = "not vetted",
+                  abstractColumnName = "Abstract",
+                  titleColumnName = "Article.Title",
+                  browserSearch = "https://www.google.com/search?q=",
+                  fontSize = 13,
+                  windowWidth = 70,
+                  windowHeight = 16,
+                  theButtons = c("YES", "maybe", "NO"),
+                  keyBindingToButtons = c("y", "m", "n"),
+                  buttonSize = 10,
+                  highlightColor = "powderblue",
+                  highlightKeywords = c("fire","burn","grassland","tallgrass prairie","prairie", "savanna", "rangeland"))
+
+
+abstract_screener(file = file.choose("effort_Sarah_Second.csv"),
+                  aReviewer = "Sarah",
+                  reviewerColumnName = "REVIEWERS_B.1",
+                  unscreenedColumnName = "INCLUDE_B.1",
+                  unscreenedValue = "not vetted",
+                  abstractColumnName = "Abstract",
+                  titleColumnName = "Article.Title",
+                  browserSearch = "https://www.google.com/search?q=",
+                  fontSize = 13,
+                  windowWidth = 70,
+                  windowHeight = 16,
+                  theButtons = c("YES", "maybe", "NO"),
+                  keyBindingToButtons = c("y", "m", "n"),
+                  buttonSize = 10,
+                  highlightColor = "powderblue",
+                  highlightKeywords = c("fire","burn","grassland","tallgrass prairie","prairie", "savanna", "rangeland"))
+
