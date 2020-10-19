@@ -33,6 +33,8 @@ library(data.table)
 library(tidyverse)
 #install.packages("metagear")
 library(metagear)
+#install.packages("arsenal")
+library(arsenal)
 
 
 
@@ -257,16 +259,20 @@ Second_Screen_merged<- Second_Screen %>%
 Second_Screen_New_papers<-Second_Screen_merged %>% 
   rbind(Second_Screen_new_col)
 
-Second_Screen_Unique<- Second_Screen_New_papers[!duplicated(Second_Screen_New_papers$Article.Title),]
+Second_Screen_Unique<- Second_Screen_New_papers[!duplicated(Second_Screen_New_papers$Article.Title),] %>% 
+  rename("REVIEWERS_A1"="REVIEWERS_A") %>% 
+  rename("REVIEWERS_B1"="REVIEWERS_B") %>% 
+  rename("INCLUDE_A1"="INCLUDE_A") %>% 
+  rename("INCLUDE_B1"="INCLUDE_B")
 
-Second_Screen_Unique[c("STUDY_ID", "REVIEWERS_A", "INCLUDE_A","REVIEWERS_B","INCLUDE_B")]
+Second_Screen_Unique[c("STUDY_ID", "REVIEWERS_A1", "INCLUDE_A1","REVIEWERS_B1","INCLUDE_B1")]
 
 References_unscreened_second<- effort_distribute(Second_Screen_Unique, dual = TRUE, reviewers = c("Kathryn_Second", "Sarah_Second"), initialize = TRUE, save_split = TRUE,) 
 
 abstract_screener(file = file.choose("effort_Kathryn_Second.csv"),
                   aReviewer = "Kathryn",
-                  reviewerColumnName = "REVIEWERS_A.1",
-                  unscreenedColumnName = "INCLUDE_A.1",
+                  reviewerColumnName = "REVIEWERS_A1",
+                  unscreenedColumnName = "INCLUDE_A1",
                   unscreenedValue = "not vetted",
                   abstractColumnName = "Abstract",
                   titleColumnName = "Article.Title",
@@ -283,8 +289,8 @@ abstract_screener(file = file.choose("effort_Kathryn_Second.csv"),
 
 abstract_screener(file = file.choose("effort_Sarah_Second.csv"),
                   aReviewer = "Sarah",
-                  reviewerColumnName = "REVIEWERS_B.1",
-                  unscreenedColumnName = "INCLUDE_B.1",
+                  reviewerColumnName = "REVIEWERS_B1",
+                  unscreenedColumnName = "INCLUDE_B1",
                   unscreenedValue = "not vetted",
                   abstractColumnName = "Abstract",
                   titleColumnName = "Article.Title",
@@ -297,4 +303,67 @@ abstract_screener(file = file.choose("effort_Sarah_Second.csv"),
                   buttonSize = 10,
                   highlightColor = "powderblue",
                   highlightKeywords = c("fire","burn","grassland","tallgrass prairie","prairie", "savanna", "rangeland"))
+
+#remove columns that interfered with merging, including the unused Reviewer in each dataframe
+
+Kathryn_Second<-read.csv("effort_Kathryn_Second.csv")%>%
+  select("STUDY_ID","REVIEWERS_A1","INCLUDE_A1") #%>% 
+
+Sarah_Second<-read.csv("effort_Sarah_Second.csv") %>% 
+  select(-"REVIEWERS_A1",-"INCLUDE_A1") #%>% 
+
+theRefs_screened_second <- Kathryn_Second %>% 
+  left_join(Sarah_Second)
+
+screening_checks_second<-theRefs_screened_second %>% 
+  select("STUDY_ID","INCLUDE_A1","INCLUDE_B1")
+
+#instead of using effort_summary -- we looked together at each individual outcome and if we dissagreed, we went into excel and manually changed the answer of one of our reviews to match the other
+theRefs_screened_second[c("STUDY_ID", "REVIEWERS_A1", "INCLUDE_A1","REVIEWERS_B1","INCLUDE_B1")]
+
+Kathryn_1_second<-theRefs_screened_second%>%
+  select(-"REVIEWERS_B1",-"INCLUDE_B1") %>% 
+  rename("INCLUDE"="INCLUDE_A1") %>% 
+  rename("REVIEWERS"="REVIEWERS_A1")
+
+Sarah_1_second<-theRefs_screened_second %>% 
+  select(-"REVIEWERS_A1",-"INCLUDE_A1") %>% 
+  rename("INCLUDE"="INCLUDE_B1")%>% 
+  rename("REVIEWERS"="REVIEWERS_B1")
+
+
+summary(comparedf(Kathryn_1_second,Sarah_1_second))
+
+#figure out why NA isn't changin to NO
+theRefs_screened_second[644,75]<-"NO" #change sarah's answer
+theRefs_screened_second[649,3]<-"NO" #change kathryn's answer
+theRefs_screened_second[662,75]<-"YES"
+theRefs_screened_second[664,3]<-"YES"
+theRefs_screened_second[666,75]<-"YES"
+theRefs_screened_second[672,3]<-"YES"
+theRefs_screened_second[674,3]<-"NO"
+theRefs_screened_second[683,75]<-"NO" 
+theRefs_screened_second[686,75]<-"NO" 
+theRefs_screened_second[688,75]<-"YES"
+theRefs_screened_second[691,3]<-"NO"
+theRefs_screened_second[695,75]<-"NO" 
+theRefs_screened_second[701,75]<-"YES"
+theRefs_screened_second[705,3]<-"NO"
+theRefs_screened_second[708,3]<-"YES"
+theRefs_screened_second[714,75]<-"YES"
+theRefs_screened_second[719,3]<-"NO"
+theRefs_screened_second[728,3]<-"NO"
+theRefs_screened_second[729,75]<-"NO"
+theRefs_screened_second[746,3]<-"NO"
+theRefs_screened_second[748,75]<-"NO"
+theRefs_screened_second[752,3]<-"NO"
+theRefs_screened_second[759,75]<-"NO"
+theRefs_screened_second[760,75]<-"YES"
+theRefs_screened_second[761,3]<-"NO"
+theRefs_screened_second[762,75]<-"YES"
+
+
+
+
+
 
