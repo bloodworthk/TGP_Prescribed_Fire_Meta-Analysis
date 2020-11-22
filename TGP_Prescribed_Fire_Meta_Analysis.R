@@ -321,6 +321,60 @@ screening_checks_second<-theRefs_screened_second %>%
 #instead of using effort_summary -- we looked together at each individual outcome and if we dissagreed, we went into excel and manually changed the answer of one of our reviews to match the other
 theRefs_screened_second[c("STUDY_ID", "REVIEWERS_A1", "INCLUDE_A1","REVIEWERS_B1","INCLUDE_B1")]
 
+
+theRefs_screened_second[644,75]<-"NO" #change sarah's answer
+theRefs_screened_second[649,3]<-"NO" #change kathryn's answer
+theRefs_screened_second[662,75]<-"YES"
+theRefs_screened_second[664,3]<-"YES"
+theRefs_screened_second[666,75]<-"YES"
+theRefs_screened_second[672,3]<-"YES"
+theRefs_screened_second[674,3]<-"NO"
+theRefs_screened_second[683,75]<-"NO" 
+theRefs_screened_second[686,75]<-"NO" 
+theRefs_screened_second[688,75]<-"YES"
+theRefs_screened_second[691,3]<-"YES"
+theRefs_screened_second[695,75]<-"NO" 
+theRefs_screened_second[701,75]<-"YES"
+theRefs_screened_second[705,3]<-"NO"
+theRefs_screened_second[708,3]<-"YES"
+theRefs_screened_second[714,75]<-"YES"
+theRefs_screened_second[719,3]<-"NO"
+theRefs_screened_second[728,3]<-"NO"
+theRefs_screened_second[729,75]<-"NO"
+theRefs_screened_second[746,3]<-"NO"
+theRefs_screened_second[748,3]<-"NO"
+theRefs_screened_second[752,3]<-"NO"
+theRefs_screened_second[759,75]<-"NO"
+theRefs_screened_second[760,75]<-"YES"
+theRefs_screened_second[761,3]<-"NO"
+theRefs_screened_second[762,75]<-"YES"
+theRefs_screened_second[764,75]<-"NO"
+theRefs_screened_second[767,3]<-"NO"
+theRefs_screened_second[778,75]<-"NO"
+theRefs_screened_second[779,75]<-"NO"
+theRefs_screened_second[790,75]<-"NO"
+theRefs_screened_second[791,75]<-"YES" #michigan
+theRefs_screened_second[792,75]<-"NO"
+theRefs_screened_second[794,75]<-"NO"
+theRefs_screened_second[796,75]<-"YES" #arkansas? 
+theRefs_screened_second[799,75]<-"YES" #michigan
+theRefs_screened_second[810,75]<-"YES" 
+theRefs_screened_second[811,3]<-"YES"
+theRefs_screened_second[813,75]<-"YES" 
+theRefs_screened_second[814,75]<-"NO" 
+theRefs_screened_second[818,3]<-"YES"
+theRefs_screened_second[823,3]<-"YES"
+theRefs_screened_second[831,75]<-"NO" 
+theRefs_screened_second[839,3]<-"YES"
+theRefs_screened_second[842,3]<-"YES"
+theRefs_screened_second[843,3]<-"NO"
+theRefs_screened_second[849,75]<-"NO"
+theRefs_screened_second[850,75]<-"NO"
+theRefs_screened_second[865,75]<-"YES"
+theRefs_screened_second[867,75]<-"YES"
+
+
+
 Kathryn_1_second<-theRefs_screened_second%>%
   select(-"REVIEWERS_B1",-"INCLUDE_B1") %>% 
   rename("INCLUDE"="INCLUDE_A1") %>% 
@@ -333,37 +387,6 @@ Sarah_1_second<-theRefs_screened_second %>%
 
 
 summary(comparedf(Kathryn_1_second,Sarah_1_second))
-
-#figure out why NA isn't changin to NO
-theRefs_screened_second[644,75]<-"NO" #change sarah's answer
-theRefs_screened_second[649,3]<-"NO" #change kathryn's answer
-theRefs_screened_second[662,75]<-"YES"
-theRefs_screened_second[664,3]<-"YES"
-theRefs_screened_second[666,75]<-"YES"
-theRefs_screened_second[672,3]<-"YES"
-theRefs_screened_second[674,3]<-"NO"
-theRefs_screened_second[683,75]<-"NO" 
-theRefs_screened_second[686,75]<-"NO" 
-theRefs_screened_second[688,75]<-"YES"
-theRefs_screened_second[691,3]<-"NO"
-theRefs_screened_second[695,75]<-"NO" 
-theRefs_screened_second[701,75]<-"YES"
-theRefs_screened_second[705,3]<-"NO"
-theRefs_screened_second[708,3]<-"YES"
-theRefs_screened_second[714,75]<-"YES"
-theRefs_screened_second[719,3]<-"NO"
-theRefs_screened_second[728,3]<-"NO"
-theRefs_screened_second[729,75]<-"NO"
-theRefs_screened_second[746,3]<-"NO"
-theRefs_screened_second[748,75]<-"NO"
-theRefs_screened_second[752,3]<-"NO"
-theRefs_screened_second[759,75]<-"NO"
-theRefs_screened_second[760,75]<-"YES"
-theRefs_screened_second[761,3]<-"NO"
-theRefs_screened_second[762,75]<-"YES"
-
-
-
 
 
 
