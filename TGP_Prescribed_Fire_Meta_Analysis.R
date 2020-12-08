@@ -232,8 +232,6 @@ Sarah_1<-theRefs_screened %>%
   rename("INCLUDE"="INCLUDE_B")%>% 
   rename("REVIEWERS"="REVIEWERS_B")
 
-#install.packages("arsenal")
-library(arsenal)
 
 summary(comparedf(Kathryn_1,Sarah_1))
 
@@ -388,5 +386,73 @@ Sarah_1_second<-theRefs_screened_second %>%
 
 summary(comparedf(Kathryn_1_second,Sarah_1_second))
 
+#### Third set of screening process ####
 
+#merge together              
+
+#bring in dataframe with new papers that also includes ~800 of the same papers that we already screened and has duplicates as a result of two different runs being merged
+Third_Screen<-read.csv("Papers/Articles_For_Screening_third_round.csv",header=T)
+
+Third_Screen_Only_Unique<- Third_Screen[!duplicated(Third_Screen$Article.Title),] %>% 
+  select(-X)
+
+Third_Screen_new_col<-Third_Screen_Only_Unique %>% 
+  add_column(STUDY_ID=NA,.after = "Date.of.Export") %>%
+  add_column(REVIEWERS_A1="Kathryn",.after = "Date.of.Export") %>% 
+  add_column(INCLUDE_A1="not vetted",.after = "Date.of.Export") %>%
+  add_column(REVIEWERS_B1="Sarah",.after = "Date.of.Export") %>% 
+  add_column(INCLUDE_B1="not vetted",.after = "Date.of.Export") %>%
+  add_column(STUDY_ID.2=NA,.after = "Date.of.Export")
+
+Third_Screen_merged<- Third_Screen_Only_Unique %>% 
+  right_join(theRefs_screened_second) %>% 
+  select(-X,-REVIEWERS_B,-INCLUDE_B,-STUDY_ID.1)
+
+Third_Screen_New_papers<-Third_Screen_merged %>% 
+  rbind(Third_Screen_new_col)
+
+Third_Screen_Unique<- Third_Screen_New_papers[!duplicated(Third_Screen_New_papers$Article.Title),] %>% 
+  rename("REVIEWERS_A2"="REVIEWERS_A1") %>% 
+  rename("REVIEWERS_B2"="REVIEWERS_B1") %>% 
+  rename("INCLUDE_A2"="INCLUDE_A1") %>% 
+  rename("INCLUDE_B2"="INCLUDE_B1")
+
+Third_Screen_Unique[c("STUDY_ID", "REVIEWERS_A2", "INCLUDE_A2","REVIEWERS_B2","INCLUDE_B2")]
+
+References_unscreened_third<- effort_distribute(Third_Screen_Unique, dual = TRUE, reviewers = c("Kathryn_Third", "Sarah_Third"), initialize = TRUE, save_split = TRUE,) 
+
+abstract_screener(file = file.choose("effort_Kathryn_third.csv"),
+                  aReviewer = "Kathryn",
+                  reviewerColumnName = "REVIEWERS_A2",
+                  unscreenedColumnName = "INCLUDE_A2",
+                  unscreenedValue = "not vetted",
+                  abstractColumnName = "Abstract",
+                  titleColumnName = "Article.Title",
+                  browserSearch = "https://www.google.com/search?q=",
+                  fontSize = 13,
+                  windowWidth = 70,
+                  windowHeight = 16,
+                  theButtons = c("YES", "maybe", "NO"),
+                  keyBindingToButtons = c("y", "m", "n"),
+                  buttonSize = 10,
+                  highlightColor = "powderblue",
+                  highlightKeywords = c("fire","burn","grassland","tallgrass prairie","prairie", "savanna", "rangeland","Asia","Africa","New Zealand","Australia","Europe"))
+
+
+abstract_screener(file = file.choose("effort_Sarah_third.csv"),
+                  aReviewer = "Sarah",
+                  reviewerColumnName = "REVIEWERS_B2",
+                  unscreenedColumnName = "INCLUDE_B2",
+                  unscreenedValue = "not vetted",
+                  abstractColumnName = "Abstract",
+                  titleColumnName = "Article.Title",
+                  browserSearch = "https://www.google.com/search?q=",
+                  fontSize = 13,
+                  windowWidth = 70,
+                  windowHeight = 16,
+                  theButtons = c("YES", "maybe", "NO"),
+                  keyBindingToButtons = c("y", "m", "n"),
+                  buttonSize = 10,
+                  highlightColor = "powderblue",
+                  highlightKeywords = c("fire","burn","grassland","tallgrass prairie","prairie", "savanna", "rangeland","Asia","Africa","New Zealand","Australia","Europe"))
 
