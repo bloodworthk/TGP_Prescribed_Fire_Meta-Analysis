@@ -26,8 +26,7 @@ BiocManager::install("EBImage")
 #install.packages("Rcpp")
 library(Rcpp)
 #install.packages("tcltk2")
-library(tcltk2)
-#install.packages("data.table-package ")
+library(tcltk2)#install.packages("data.table-package ")
 library(data.table)
 #install.packages("tidyverse")
 library(tidyverse)
@@ -456,3 +455,34 @@ abstract_screener(file = file.choose("effort_Sarah_third.csv"),
                   highlightColor = "powderblue",
                   highlightKeywords = c("fire","burn","grassland","tallgrass prairie","prairie", "savanna", "rangeland","Asia","Africa","New Zealand","Australia","Europe"))
 
+#remove columns that interfered with merging, including the unused Reviewer in each dataframe
+
+Kathryn_Third<-read.csv("effort_Kathryn_third.csv")%>%
+  select("STUDY_ID","REVIEWERS_A2","INCLUDE_A2") #%>% 
+
+Sarah_Third<-read.csv("effort_Sarah_third.csv") %>% 
+  select(-"REVIEWERS_A2",-"INCLUDE_A2") #%>% 
+
+theRefs_screened_third<- Kathryn_Third %>% 
+  left_join(Sarah_Third)
+
+screening_checks_third<-theRefs_screened_third %>% 
+  select("STUDY_ID","INCLUDE_A2","INCLUDE_B2")
+
+#instead of using effort_summary -- we looked together at each individual outcome and if we dissagreed, we went into excel and manually changed the answer of one of our reviews to match the other
+theRefs_screened_third[c("STUDY_ID", "REVIEWERS_A2", "INCLUDE_A2","REVIEWERS_B2","INCLUDE_B2")]
+
+theRefs_screened_third[,76]<-"NO" #change sarah's answer
+theRefs_screened_third[,3]<-"NO" #change kathryn's answer
+
+Kathryn_1_third<-theRefs_screened_third%>%
+  select(-"REVIEWERS_B2",-"INCLUDE_B2") %>% 
+  rename("INCLUDE"="INCLUDE_A2") %>% 
+  rename("REVIEWERS"="REVIEWERS_A2")
+
+Sarah_1_third<-theRefs_screened_third %>% 
+  select(-"REVIEWERS_A2",-"INCLUDE_A2") %>% 
+  rename("INCLUDE"="INCLUDE_B2")%>% 
+  rename("REVIEWERS"="REVIEWERS_B2")
+
+summary(comparedf(Kathryn_1_third,Sarah_1_third))
